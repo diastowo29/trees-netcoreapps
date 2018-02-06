@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.0.1-beta" />
+    <PackageReference Include="ExcelDataReader" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1000" />
+    <PackageReference Include="MSOffice.Object.Library" Version="15.0.4420.1018" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="NPOI" Version="2.3.0" />
+    <PackageReference Include="Restful.Web.Client" Version="1.0.0.7" />
+    <PackageReference Include="RestSharp" Version="106.2.1" />
+    <PackageReference Include="System.Net.Mail" Version="1.0.0-rtm-00002" />
+  </ItemGroup>
+
+</Project>
