@@ -24,6 +24,8 @@ namespace newConsole
         static string zendeskUsername = "rahdityoluhung89@gmail.com";
         static string destDirectory = "/home/diastowo/Documents/DOT NET/excel done/";
         static List<object> userList = new List<object>();
+        static string supportGroupId = "";
+        static List<Dictionary<string,string>> doneList = new List<Dictionary<string,string>>();
 
         // static string zendeskDomain = "https://treesdemo1.zendesk.com";
         // static string zendeskUsername = "eldien.hasmanto@treessolutions.com";
@@ -34,13 +36,15 @@ namespace newConsole
         
         static void Main(string[] args)
         {
-            initiate();
             // // // // // deleteGroups();
 
+            initiate();
         	System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         	string[] array1 = Directory.GetFiles(@"/home/diastowo/Documents/DOT NET/excel/");
         	foreach (string filePath in array1) {
         		if (filePath.Contains("xlsx")) {
+                    // DateTime dt = File.GetLastWriteTime(filePath);
+                    // Console.WriteLine(dt);
         			doXlsx(filePath);
         		} else if (filePath.Contains("xls")) {
         			// doXls(filePath);
@@ -158,6 +162,7 @@ namespace newConsole
             string groupBMid = "";
             string groupAHid = "";
             string groupDHid = "";
+            doneList = new List<Dictionary<string,string>>();
 
             for (int i=0; i<entries.Count; i++) {
                 string groupMM = "Group MM " + entries[i]["Branch Code"].ToString();
@@ -249,11 +254,12 @@ namespace newConsole
                         }
                     }
                     List<Dictionary<string,string>> groupMembershipsList = createGroupMembership(groupMMid, userMmId, groupDHid, userDhId, groupBMid, userBmId, groupAHid, userAhId);
-                    List<string> groupsIds = new List<string>();
-                    groupsIds.Add(groupMMid);
-                    groupsIds.Add(groupDHid);
-                    groupsIds.Add(groupBMid);
-                    groupsIds.Add(groupAHid);
+
+                    // List<string> groupsIds = new List<string>();
+                    // groupsIds.Add(groupMMid);
+                    // groupsIds.Add(groupDHid);
+                    // groupsIds.Add(groupBMid);
+                    // groupsIds.Add(groupAHid);
                     checkGroupMemberships(groupMembershipsList);
 
                 } else if (i <= 10) {
@@ -336,11 +342,11 @@ namespace newConsole
                         }
                     }
                     List<Dictionary<string,string>> groupMembershipsList = createGroupMembership(groupMMid, userMmId, groupDHid, userDhId, groupBMid, userBmId, groupAHid, userAhId);
-                    List<string> groupsIds = new List<string>();
-                    groupsIds.Add(groupMMid);
-                    groupsIds.Add(groupDHid);
-                    groupsIds.Add(groupBMid);
-                    groupsIds.Add(groupAHid);
+                    // List<string> groupsIds = new List<string>();
+                    // groupsIds.Add(groupMMid);
+                    // groupsIds.Add(groupDHid);
+                    // groupsIds.Add(groupBMid);
+                    // groupsIds.Add(groupAHid);
                     checkGroupMemberships(groupMembershipsList);
                 checkDealer(dealerId, dealerName, emailOwner, emailPicOwner, emailPicOutlet);
                 }
@@ -419,13 +425,35 @@ namespace newConsole
                 // Console.WriteLine(groupMembershipRseponse);
                 JObject groupMembershipJoResponse = JObject.Parse(groupMembershipRseponse);
                 JArray memberList = (JArray)groupMembershipJoResponse["group_memberships"];
-                
-                /*STILL GOT AN ERROR*/
-                // Console.WriteLine(memberList.Count);
+
                 if (memberList.Count > 1) {
                     for (int j=0; j<memberList.Count; j++) {
                         if (memberList[j]["user_id"].ToString() != groupsIds[i]["user_id"]) {
                             willBeDelete.Add(memberList[j]["id"].ToString());
+                        }
+                    }
+                }
+
+                string userGroupsApi = zendeskDomain + "/api/v2/users/" + groupsIds[i]["user_id"] + "/group_memberships.json";
+                string userGroupResponse = callApi(userGroupsApi);
+                JObject userGroupJoResponse = JObject.Parse(userGroupResponse);
+                JArray groupsList = (JArray)userGroupJoResponse["group_memberships"];
+                bool groupFound = false;
+                if (groupsList.Count > 1) {
+                    for (int k=0; k<groupsList.Count; k++) {
+                        if (groupsList[k]["group_id"].ToString() != groupsIds[i]["group_id"]) {
+                            if (groupsList[k]["group_id"].ToString() != supportGroupId) {
+                                for (int l=0; l<doneList.Count; l++) {
+                                    if (doneList[l]["user_id"].ToString() == groupsIds[i]["user_id"].ToString()) {
+                                        if (doneList[l]["group_id"].ToString() == groupsList[k]["group_id"].ToString()){
+                                            groupFound = true;
+                                        }
+                                    }
+                                }
+                                if (!groupFound) {
+                                    willBeDelete.Add(groupsList[k]["id"].ToString());
+                                }
+                            }
                         }
                     }
                 }
@@ -483,18 +511,22 @@ namespace newConsole
             Dictionary<string, List<Dictionary<string,string>>> groupMemberships = new Dictionary<string, List<Dictionary<string,string>>>();
             groupMembers.Add("user_id", userMm);
             groupMembers.Add("group_id", groupMm);
+            doneList.Add(groupMembers);
             groupMembersList.Add(groupMembers);
             groupMembers = new Dictionary<string,string>();
             groupMembers.Add("user_id", userDh);
             groupMembers.Add("group_id", groupDh);
+            doneList.Add(groupMembers);
             groupMembersList.Add(groupMembers);
             groupMembers = new Dictionary<string,string>();
             groupMembers.Add("user_id", userBm);
             groupMembers.Add("group_id", groupBm);
+            doneList.Add(groupMembers);
             groupMembersList.Add(groupMembers);
             groupMembers = new Dictionary<string,string>();
             groupMembers.Add("user_id", userAh);
             groupMembers.Add("group_id", groupAh);
+            doneList.Add(groupMembers);
             groupMembersList.Add(groupMembers);
             groupMembers = new Dictionary<string,string>();
 
@@ -579,6 +611,9 @@ namespace newConsole
             JArray groupsList = (JArray)joResponse["groups"];
 
             for (int i=0; i<groupsList.Count; i++) {
+                if (groupsList[i]["name"].ToString() == "Support") {
+                    supportGroupId = groupsList[i]["id"].ToString();
+                }
                 allGroups.Add(groupsList[i]);
             }
 
