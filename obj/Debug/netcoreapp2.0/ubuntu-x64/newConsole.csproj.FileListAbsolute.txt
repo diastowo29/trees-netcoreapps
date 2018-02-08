@@ -1,0 +1,13 @@
+/home/diastowo/Documents/DOT NET/newConsole/bin/Debug/netcoreapp2.0/ubuntu-x64/libhostpolicy.so
+/home/diastowo/Documents/DOT NET/newConsole/bin/Debug/netcoreapp2.0/ubuntu-x64/libhostfxr.so
+/home/diastowo/Documents/DOT NET/newConsole/bin/Debug/netcoreapp2.0/ubuntu-x64/newConsole
+/home/diastowo/Documents/DOT NET/newConsole/bin/Debug/netcoreapp2.0/ubuntu-x64/newConsole.deps.json
+/home/diastowo/Documents/DOT NET/newConsole/bin/Debug/netcoreapp2.0/ubuntu-x64/newConsole.runtimeconfig.json
+/home/diastowo/Documents/DOT NET/newConsole/bin/Debug/netcoreapp2.0/ubuntu-x64/newConsole.runtimeconfig.dev.json
+/home/diastowo/Documents/DOT NET/newConsole/bin/Debug/netcoreapp2.0/ubuntu-x64/newConsole.dll
+/home/diastowo/Documents/DOT NET/newConsole/bin/Debug/netcoreapp2.0/ubuntu-x64/newConsole.pdb
+/home/diastowo/Documents/DOT NET/newConsole/obj/Debug/netcoreapp2.0/ubuntu-x64/newConsole.csproj.CoreCompileInputs.cache
+/home/diastowo/Documents/DOT NET/newConsole/obj/Debug/netcoreapp2.0/ubuntu-x64/newConsole.AssemblyInfoInputs.cache
+/home/diastowo/Documents/DOT NET/newConsole/obj/Debug/netcoreapp2.0/ubuntu-x64/newConsole.AssemblyInfo.cs
+/home/diastowo/Documents/DOT NET/newConsole/obj/Debug/netcoreapp2.0/ubuntu-x64/newConsole.dll
+/home/diastowo/Documents/DOT NET/newConsole/obj/Debug/netcoreapp2.0/ubuntu-x64/newConsole.pdb

@@ -37,14 +37,11 @@ namespace newConsole
         static void Main(string[] args)
         {
             // // // // // deleteGroups();
-
             initiate();
         	System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         	string[] array1 = Directory.GetFiles(@"/home/diastowo/Documents/DOT NET/excel/");
         	foreach (string filePath in array1) {
         		if (filePath.Contains("xlsx")) {
-                    // DateTime dt = File.GetLastWriteTime(filePath);
-                    // Console.WriteLine(dt);
         			doXlsx(filePath);
         		} else if (filePath.Contains("xls")) {
         			// doXls(filePath);
@@ -253,6 +250,32 @@ namespace newConsole
                             // Console.WriteLine(usersList[u]["id"]);
                         }
                     }
+
+                    if (!mmFound) {
+                        string userCreate = newCon.createUser(namaMm);
+                        JObject userCreateJoResponse = JObject.Parse(userCreate);
+                        JObject user = (JObject)userJoResponse["user"];
+                        userMmId = user["id"].ToString();
+                    }
+                    if (!dhFound) {
+                        string userCreate = newCon.createUser(namaDh);
+                        JObject userCreateJoResponse = JObject.Parse(userCreate);
+                        JObject user = (JObject)userJoResponse["user"];
+                        userDhId = user["id"].ToString();
+                    }
+                    if (!bmFound) {
+                        string userCreate = newCon.createUser(namaBm);
+                        JObject userCreateJoResponse = JObject.Parse(userCreate);
+                        JObject user = (JObject)userJoResponse["user"];
+                        userBmId = user["id"].ToString();
+                    }
+                    if (!ahFound) {
+                        string userCreate = newCon.createUser(namaAh);
+                        JObject userCreateJoResponse = JObject.Parse(userCreate);
+                        JObject user = (JObject)userJoResponse["user"];
+                        userAhId = user["id"].ToString();
+                    }
+
                     List<Dictionary<string,string>> groupMembershipsList = createGroupMembership(groupMMid, userMmId, groupDHid, userDhId, groupBMid, userBmId, groupAHid, userAhId);
 
                     // List<string> groupsIds = new List<string>();
@@ -341,6 +364,32 @@ namespace newConsole
                             // Console.WriteLine(usersList[u]["id"]);
                         }
                     }
+
+                    if (!mmFound) {
+                        string userCreate = newCon.createUser(namaMm);
+                        JObject userCreateJoResponse = JObject.Parse(userCreate);
+                        JObject user = (JObject)userJoResponse["user"];
+                        userMmId = user["id"].ToString();
+                    }
+                    if (!dhFound) {
+                        string userCreate = newCon.createUser(namaDh);
+                        JObject userCreateJoResponse = JObject.Parse(userCreate);
+                        JObject user = (JObject)userJoResponse["user"];
+                        userDhId = user["id"].ToString();
+                    }
+                    if (!bmFound) {
+                        string userCreate = newCon.createUser(namaBm);
+                        JObject userCreateJoResponse = JObject.Parse(userCreate);
+                        JObject user = (JObject)userJoResponse["user"];
+                        userBmId = user["id"].ToString();
+                    }
+                    if (!ahFound) {
+                        string userCreate = newCon.createUser(namaAh);
+                        JObject userCreateJoResponse = JObject.Parse(userCreate);
+                        JObject user = (JObject)userJoResponse["user"];
+                        userAhId = user["id"].ToString();
+                    }
+
                     List<Dictionary<string,string>> groupMembershipsList = createGroupMembership(groupMMid, userMmId, groupDHid, userDhId, groupBMid, userBmId, groupAHid, userAhId);
                     // List<string> groupsIds = new List<string>();
                     // groupsIds.Add(groupMMid);
@@ -499,8 +548,18 @@ namespace newConsole
         public static string isUserExist (string nameParameter) {
             var searchUserApi =  zendeskDomain + "/api/v2/search.json?query=type:user%20" + nameParameter;
             string response = callApi(searchUserApi);
-            // Console.WriteLine(content);
             return response;
+        }
+
+        public string createUser (string userName) {
+            Dictionary<string,object> newUser = new Dictionary<string,object>();
+            Dictionary<string,string> userProp = new Dictionary<string,string>();
+            userProp.Add("name", userName);
+            newUser.Add("user", userProp);
+            var createUserApi =  zendeskDomain + "/api/v2/users.json";
+            Console.WriteLine(JsonConvert.SerializeObject(newUser));
+            // string response = callApiPost(JsonConvert.SerializeObject(user), createUserApi);
+            return "response";
         }
 
         public static List<Dictionary<string,string>> createGroupMembership (string groupMm, string userMm, string groupDh, string userDh, string groupBm, string userBm, string groupAh, string userAh) {
