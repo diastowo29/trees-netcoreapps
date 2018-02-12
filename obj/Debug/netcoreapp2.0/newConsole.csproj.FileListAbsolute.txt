@@ -8,3 +8,13 @@
 /home/diastowo/Documents/DOT NET/newConsole/obj/Debug/netcoreapp2.0/newConsole.AssemblyInfo.cs
 /home/diastowo/Documents/DOT NET/newConsole/obj/Debug/netcoreapp2.0/newConsole.dll
 /home/diastowo/Documents/DOT NET/newConsole/obj/Debug/netcoreapp2.0/newConsole.pdb
+D:\WORK\DOTNET\trees-netcoreapps\bin\Debug\netcoreapp2.0\newConsole.deps.json
+D:\WORK\DOTNET\trees-netcoreapps\bin\Debug\netcoreapp2.0\newConsole.runtimeconfig.json
+D:\WORK\DOTNET\trees-netcoreapps\bin\Debug\netcoreapp2.0\newConsole.runtimeconfig.dev.json
+D:\WORK\DOTNET\trees-netcoreapps\bin\Debug\netcoreapp2.0\newConsole.dll
+D:\WORK\DOTNET\trees-netcoreapps\bin\Debug\netcoreapp2.0\newConsole.pdb
+D:\WORK\DOTNET\trees-netcoreapps\obj\Debug\netcoreapp2.0\newConsole.csproj.CoreCompileInputs.cache
+D:\WORK\DOTNET\trees-netcoreapps\obj\Debug\netcoreapp2.0\newConsole.AssemblyInfoInputs.cache
+D:\WORK\DOTNET\trees-netcoreapps\obj\Debug\netcoreapp2.0\newConsole.AssemblyInfo.cs
+D:\WORK\DOTNET\trees-netcoreapps\obj\Debug\netcoreapp2.0\newConsole.dll
+D:\WORK\DOTNET\trees-netcoreapps\obj\Debug\netcoreapp2.0\newConsole.pdb
