@@ -22,6 +22,7 @@ namespace newConsole
     {
         static string zendeskDomain = "https://developmenttesting.zendesk.com";
         static string zendeskUsername = "rahdityoluhung89@gmail.com";
+        static string originDirectory = "D:/WORK/Doc/";
         static string destDirectory = "/home/diastowo/Documents/DOT NET/excel done/";
         static List<object> userList = new List<object>();
         static string supportGroupId = "";
@@ -39,7 +40,7 @@ namespace newConsole
             // // // // // deleteGroups();
             initiate();
         	System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-        	string[] array1 = Directory.GetFiles(@"/home/diastowo/Documents/DOT NET/excel/");
+        	string[] array1 = Directory.GetFiles(originDirectory);
         	foreach (string filePath in array1) {
         		if (filePath.Contains("xlsx")) {
         			doXlsx(filePath);
