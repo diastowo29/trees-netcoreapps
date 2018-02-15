@@ -16,6 +16,8 @@ using System.Net.Mail;
 using System.Net.Http;
 using System.Net;
 
+// using Organizations;
+
 namespace newConsole
 {
     class Program
@@ -37,6 +39,8 @@ namespace newConsole
         
         static void Main(string[] args)
         {
+            // Organizations org = new Organizations();
+            // Console.WriteLine(org.searchOrganizations("1", "2", "3", "4", "5", "6", "7", "8", "9"));
             // // // // // deleteGroups();
             initiate();
         	System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -151,6 +155,8 @@ namespace newConsole
         }
 
         public static void doProcessMapping(List<Dictionary<string, string>> entries){
+            Organizations org = new Organizations();
+            Users users = new Users();
             string userMmId = "";
             string userDhId = "";
             string userBmId = "";
@@ -160,6 +166,9 @@ namespace newConsole
             string groupBMid = "";
             string groupAHid = "";
             string groupDHid = "";
+
+            string orgId = "";
+
             doneList = new List<Dictionary<string,string>>();
 
             for (int i=0; i<entries.Count; i++) {
@@ -167,7 +176,7 @@ namespace newConsole
                 string groupBM = "Group BM " + entries[i]["Branch Code"].ToString();
                 string groupAH = "Group Area Head " + entries[i]["AREA"].ToString();
                 string groupDH = "Group Dept Head " + entries[i]["Region Dept Head"].ToString();
-                string orgName = "Organization " + entries[i]["Branch Code"].ToString();
+                string orgName = "Organization D " + entries[i]["Branch Code"].ToString();
 
                 string namaMm = entries[i]["MM"].ToString();
                 string namaDh = entries[i]["Dept. Head"].ToString();
@@ -285,8 +294,9 @@ namespace newConsole
                     // groupsIds.Add(groupBMid);
                     // groupsIds.Add(groupAHid);
                     checkGroupMemberships(groupMembershipsList);
-
-                } else if (i <= 10) {
+                    orgId = org.searchOrganizations(orgName, groupMMid, userMmId, groupDHid, userDhId, groupBMid, userBmId, groupAHid, userAhId);
+                    users.checkDealer(orgId, dealerId, dealerName, emailOwner, emailPicOwner, emailPicOutlet);
+                } else if (i <= 10) {/*
 
                     if (entries[i]["Branch Code"].ToString() != entries[i-1]["Branch Code"].ToString()) {
                         if (isGroupExist(groupMM) == "0") {
@@ -398,71 +408,10 @@ namespace newConsole
                     // groupsIds.Add(groupBMid);
                     // groupsIds.Add(groupAHid);
                     checkGroupMemberships(groupMembershipsList);
-                checkDealer(dealerId, dealerName, emailOwner, emailPicOwner, emailPicOutlet);
-                }
+                    org.searchOrganizations(orgName, groupMMid, userMmId, groupDHid, userDhId, groupBMid, userBmId, groupAHid, userAhId);
+                    checkDealer(dealerId, dealerName, emailOwner, emailPicOwner, emailPicOutlet);
+                */}
             }
-        }
-
-        public static void checkDealer(string dealerId, string dealerName, string emailOwner, string emailPicOwner, string emailPicOutlet) {
-            string createUpdateManyUser = zendeskDomain + "/api/v2/users/create_or_update_many.json";
-
-            Dictionary<string, object> usersDict = new Dictionary<string,object>();
-            Dictionary<string, string> userFields = new Dictionary<string,string>();
-            Dictionary<string, object> newUser = new Dictionary<string,object>();
-            if (emailOwner != "#N/A") {
-                userFields = new Dictionary<string,string>();
-                newUser = new Dictionary<string,object>();
-                userFields.Add("dealer_id", dealerId);
-                userFields.Add("jabatan", "Owner");
-                userFields.Add("kuadran", "Q1");
-                userFields.Add("dealer_name", dealerName);
-                MailAddress emailAddress = new MailAddress(emailOwner);
-                string emailUsername = emailAddress.User;
-                newUser.Add("name", emailUsername);
-                newUser.Add("email", emailOwner);
-                newUser.Add("user_fields", userFields);
-                userList.Add(newUser);
-            }
-            if (emailPicOwner != "#N/A") {
-                userFields = new Dictionary<string,string>();
-                newUser = new Dictionary<string,object>();
-                userFields.Add("dealer_id", dealerId);
-                userFields.Add("jabatan", "PIC Owner");
-                userFields.Add("kuadran", "Q1");
-                userFields.Add("dealer_name", dealerName);
-                MailAddress emailAddress = new MailAddress(emailPicOwner);
-                string emailUsername = emailAddress.User;
-                newUser.Add("name", emailUsername);
-                newUser.Add("email", emailPicOwner);
-                newUser.Add("user_fields", userFields);
-                userList.Add(newUser);
-            }
-            if (emailPicOutlet != "#N/A") {
-                userFields = new Dictionary<string,string>();
-                newUser = new Dictionary<string,object>();
-                userFields.Add("dealer_id", dealerId);
-                userFields.Add("jabatan", "PIC Outlet");
-                userFields.Add("kuadran", "Q1");
-                userFields.Add("dealer_name", dealerName);
-                MailAddress emailAddress = new MailAddress(emailPicOutlet);
-                string emailUsername = emailAddress.User;
-                newUser.Add("name", emailUsername);
-                newUser.Add("email", emailPicOutlet);
-                newUser.Add("user_fields", userFields);
-                userList.Add(newUser);
-            }
-            
-            // userFields.Add("dealer_id", dealerId);
-            // userFields.Add("email_owner", emailOwner);
-            // userFields.Add("email_pic_owner", emailPicOwner);
-            // userFields.Add("email_pic_outlet", emailPicOutlet);
-            // newUser.Add("name", dealerName);
-            // newUser.Add("user_fields", userFields);
-
-            usersDict.Add("users", userList);
-            Console.WriteLine(JsonConvert.SerializeObject(usersDict));
-
-            // string createUpdateUser = callApiPost();
         }
 
         public static void checkGroupMemberships (List<Dictionary<string,string>> groupsIds) {
