@@ -1,0 +1,13 @@
+D:\WORK\Dotnet\trees-netcoreapps\bin\Debug\netcoreapp2.0\win81-x64\hostpolicy.dll
+D:\WORK\Dotnet\trees-netcoreapps\bin\Debug\netcoreapp2.0\win81-x64\hostfxr.dll
+D:\WORK\Dotnet\trees-netcoreapps\bin\Debug\netcoreapp2.0\win81-x64\newConsole.exe
+D:\WORK\Dotnet\trees-netcoreapps\bin\Debug\netcoreapp2.0\win81-x64\newConsole.deps.json
+D:\WORK\Dotnet\trees-netcoreapps\bin\Debug\netcoreapp2.0\win81-x64\newConsole.runtimeconfig.json
+D:\WORK\Dotnet\trees-netcoreapps\bin\Debug\netcoreapp2.0\win81-x64\newConsole.runtimeconfig.dev.json
+D:\WORK\Dotnet\trees-netcoreapps\bin\Debug\netcoreapp2.0\win81-x64\newConsole.dll
+D:\WORK\Dotnet\trees-netcoreapps\bin\Debug\netcoreapp2.0\win81-x64\newConsole.pdb
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\netcoreapp2.0\win81-x64\newConsole.csproj.CoreCompileInputs.cache
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\netcoreapp2.0\win81-x64\newConsole.AssemblyInfoInputs.cache
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\netcoreapp2.0\win81-x64\newConsole.AssemblyInfo.cs
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\netcoreapp2.0\win81-x64\newConsole.dll
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\netcoreapp2.0\win81-x64\newConsole.pdb

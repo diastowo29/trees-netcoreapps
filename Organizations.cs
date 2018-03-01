@@ -18,7 +18,7 @@ using System.Net;
 
 namespace newConsole {
 	class Organizations {
-		public string searchOrganizations (string orgName, string groupMm, string userMm, string groupDh, string userDh, string groupBm, string userBm, string groupAh, string userAh) {
+		public string searchOrganizations (string orgName, string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh) {
 			CallingApi callingApi = new CallingApi();
 			string orgId = "";
             string srcOrganization = "/api/v2/search.json?query=type:organization%20name:\"" + orgName + "\"";
@@ -26,32 +26,29 @@ namespace newConsole {
             JObject srcOrgJoResponse = JObject.Parse(srcOrgResponse);
             JArray srcOrgArray = (JArray)srcOrgJoResponse["results"];
             if (srcOrgArray.Count == 0) {
-                orgId = doCreateOrganizations(orgName, groupMm, userMm, groupDh, userDh, groupBm, userBm, groupAh, userAh);
+                orgId = doCreateOrganizations(orgName, groupMm, userMm, groupDh, userDh, groupAh, userAh);
             } else {
                 orgId = srcOrgArray[0]["id"].ToString();
-            	doUpdateOrganizations(orgId, groupMm, userMm, groupDh, userDh, groupBm, userBm, groupAh, userAh);
+            	doUpdateOrganizations(orgId, groupMm, userMm, groupDh, userDh, groupAh, userAh);
             }
             return orgId;
 		}
 
-		public string doCreateOrganizations (string orgName,string groupMm, string userMm, string groupDh, string userDh, string groupBm, string userBm, string groupAh, string userAh) {
+		public string doCreateOrganizations (string orgName,string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh) {
 			CallingApi callingApi = new CallingApi();
 			Console.WriteLine("doCreateOrganizations");
 			Dictionary<string,string> orgCustomField = new Dictionary<string,string>();
-			orgCustomField.Add("group_mm", groupMm);
-			orgCustomField.Add("user_mm", userMm);
-			orgCustomField.Add("group_dh", groupDh);
-			orgCustomField.Add("user_dh", userDh);
-			orgCustomField.Add("group_bm", groupBm);
-			orgCustomField.Add("user_bm", userBm);
-			orgCustomField.Add("group_ah", groupAh);
-			orgCustomField.Add("user_ah", userAh);
+			orgCustomField.Add("id_group_mm", groupMm);
+			orgCustomField.Add("mm_id", userMm);
+			orgCustomField.Add("id_group_dept_head", groupDh);
+			orgCustomField.Add("dept_head_id", userDh);
+			orgCustomField.Add("id_group_area_head", groupAh);
+			orgCustomField.Add("area_head_id", userAh);
 			Dictionary<string,object> orgField = new Dictionary<string,object>();
 			orgField.Add("organization_fields", orgCustomField);
 			orgField.Add("name", orgName);
 			Dictionary<string,object> org = new Dictionary<string,object>();
 			org.Add("organization", orgField);
-            Console.WriteLine(JsonConvert.SerializeObject(org));
 
             string orgId = "";
             string createOrganization = "/api/v2/organizations.json";
@@ -63,8 +60,30 @@ namespace newConsole {
             return orgId;
 		}
 
-		public void doUpdateOrganizations (string orgId, string groupMm, string userMm, string groupDh, string userDh, string groupBm, string userBm, string groupAh, string userAh) {
+		public string doUpdateOrganizations (string orgId, string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh) {
 			Console.WriteLine("doUpdateOrganizations");
+			CallingApi callingApi = new CallingApi();
+			Dictionary<string,string> orgCustomField = new Dictionary<string,string>();
+			orgCustomField.Add("id_group_mm", groupMm);
+			orgCustomField.Add("mm_id", userMm);
+			orgCustomField.Add("id_group_dept_head", groupDh);
+			orgCustomField.Add("dept_head_id", userDh);
+			orgCustomField.Add("id_group_area_head", groupAh);
+			orgCustomField.Add("area_head_id", userAh);
+			Dictionary<string,object> orgField = new Dictionary<string,object>();
+			orgField.Add("organization_fields", orgCustomField);
+			// orgField.Add("name", orgName);
+			Dictionary<string,object> org = new Dictionary<string,object>();
+			org.Add("organization", orgField);
+
+            string orgIdUpdate = "";
+            string updateOrganization = "/api/v2/organizations/" + orgId + ".json";
+            string updateOrgResponse = callingApi.callApiPut(JsonConvert.SerializeObject(org), updateOrganization);
+            JObject updateOrgJoResponse = JObject.Parse(updateOrgResponse);
+            JObject updateOrg = (JObject)updateOrgJoResponse["organization"];
+            orgIdUpdate = updateOrg["id"].ToString();
+
+            return orgIdUpdate;
 		}
 	}
 }

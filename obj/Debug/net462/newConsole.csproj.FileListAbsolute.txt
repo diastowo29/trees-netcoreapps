@@ -1,0 +1,4 @@
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\net462\newConsole.exe.config
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\net462\newConsole.csproj.CoreCompileInputs.cache
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\net462\newConsole.AssemblyInfoInputs.cache
+D:\WORK\Dotnet\trees-netcoreapps\obj\Debug\net462\newConsole.AssemblyInfo.cs

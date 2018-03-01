@@ -18,14 +18,13 @@ using System.Net;
 
 namespace newConsole {
   class CallingApi {
-    string zendeskDomain = "https://developmenttesting.zendesk.com";
-    string zendeskUsername = "rahdityoluhung89@gmail.com";
-    string originDirectory = "D:/WORK/Doc/";
-    string destDirectory = "/home/diastowo/Documents/DOT NET/excel done/";
+    string zendeskDomain = "https://fifgroup1481257374.zendesk.com";
+    string zendeskUsername = "eldien.hasmanto@treessolutions.com";
     string zendeskPassword = "W3lcome123";
 
     public string callApiPost (object parameterBody, string url) {
       Console.WriteLine("CALL POST: " + url);
+      Console.WriteLine(parameterBody);
 
       var client = new RestClient(zendeskDomain + url);
       client.Authenticator = new HttpBasicAuthenticator(zendeskUsername, zendeskPassword);
@@ -36,6 +35,7 @@ namespace newConsole {
 
       IRestResponse response = client.Execute(request);
       var content = response.Content;
+      Console.WriteLine(response.StatusCode);
       return content;
     }
 
@@ -51,6 +51,38 @@ namespace newConsole {
 
       IRestResponse response = client.Execute(request);
       var content = response.Content;
+      Console.WriteLine(response.StatusCode);
+      return content;
+    }
+
+    public string callApiPut (object parameterBody, string url) {
+      Console.WriteLine("CALL PUT: " + url);
+      Console.WriteLine(parameterBody);
+
+      var client = new RestClient(zendeskDomain + url);
+      client.Authenticator = new HttpBasicAuthenticator(zendeskUsername, zendeskPassword);
+
+      var request = new RestRequest("", Method.PUT);
+      // Console.WriteLine(JsonConvert.SerializeObject(parameterBody));
+      request.AddParameter("application/json", parameterBody, ParameterType.RequestBody);
+
+      IRestResponse response = client.Execute(request);
+      var content = response.Content;
+      Console.WriteLine(response.StatusCode);
+      return content;
+    }
+
+    public string callApiDelete (string url) {
+      Console.WriteLine("CALL DELETE: " + url);
+
+      var client = new RestClient(zendeskDomain + url);
+      client.Authenticator = new HttpBasicAuthenticator(zendeskUsername, zendeskPassword);
+
+      var request = new RestRequest("", Method.DELETE);
+
+      IRestResponse response = client.Execute(request);
+      var content = response.Content;
+      Console.WriteLine(response.StatusCode);
       return content;
     }
 	}
