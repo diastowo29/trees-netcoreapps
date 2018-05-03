@@ -12,29 +12,27 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Authenticators;
 using System.Net.Mail;
-
-using System.Net.Http;
 using System.Net;
 
 namespace newConsole {
 	class Organizations {
-		public string searchOrganizations (string orgName, string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh) {
+		public string searchOrganizations (string orgName, string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh, string zendeskUsername, string zendeskPassword) {
 			CallingApi callingApi = new CallingApi();
 			string orgId = "";
             string srcOrganization = "/api/v2/search.json?query=type:organization%20name:\"" + orgName + "\"";
-            string srcOrgResponse = callingApi.callApi(srcOrganization);
+            string srcOrgResponse = callingApi.callApi(srcOrganization, zendeskUsername, zendeskPassword);
             JObject srcOrgJoResponse = JObject.Parse(srcOrgResponse);
             JArray srcOrgArray = (JArray)srcOrgJoResponse["results"];
             if (srcOrgArray.Count == 0) {
-                orgId = doCreateOrganizations(orgName, groupMm, userMm, groupDh, userDh, groupAh, userAh);
+                orgId = doCreateOrganizations(orgName, groupMm, userMm, groupDh, userDh, groupAh, userAh, zendeskUsername, zendeskPassword);
             } else {
                 orgId = srcOrgArray[0]["id"].ToString();
-            	doUpdateOrganizations(orgId, groupMm, userMm, groupDh, userDh, groupAh, userAh);
+            	doUpdateOrganizations(orgId, groupMm, userMm, groupDh, userDh, groupAh, userAh, zendeskUsername, zendeskPassword);
             }
             return orgId;
 		}
 
-		public string doCreateOrganizations (string orgName,string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh) {
+		public string doCreateOrganizations (string orgName,string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh, string zendeskUsername, string zendeskPassword) {
 			CallingApi callingApi = new CallingApi();
 			Console.WriteLine("doCreateOrganizations");
 			Dictionary<string,string> orgCustomField = new Dictionary<string,string>();
@@ -52,7 +50,7 @@ namespace newConsole {
 
             string orgId = "";
             string createOrganization = "/api/v2/organizations.json";
-            string createOrgResponse = callingApi.callApiPost(JsonConvert.SerializeObject(org), createOrganization);
+            string createOrgResponse = callingApi.callApiPost(JsonConvert.SerializeObject(org), createOrganization, zendeskUsername, zendeskPassword);
             JObject createOrgJoResponse = JObject.Parse(createOrgResponse);
             JObject createOrg = (JObject)createOrgJoResponse["organization"];
             orgId = createOrg["id"].ToString();
@@ -60,7 +58,7 @@ namespace newConsole {
             return orgId;
 		}
 
-		public string doUpdateOrganizations (string orgId, string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh) {
+		public string doUpdateOrganizations (string orgId, string groupMm, string userMm, string groupDh, string userDh, string groupAh, string userAh, string zendeskUsername, string zendeskPassword) {
 			Console.WriteLine("doUpdateOrganizations");
 			CallingApi callingApi = new CallingApi();
 			Dictionary<string,string> orgCustomField = new Dictionary<string,string>();
@@ -78,7 +76,7 @@ namespace newConsole {
 
             string orgIdUpdate = "";
             string updateOrganization = "/api/v2/organizations/" + orgId + ".json";
-            string updateOrgResponse = callingApi.callApiPut(JsonConvert.SerializeObject(org), updateOrganization);
+            string updateOrgResponse = callingApi.callApiPut(JsonConvert.SerializeObject(org), updateOrganization, zendeskUsername, zendeskPassword);
             JObject updateOrgJoResponse = JObject.Parse(updateOrgResponse);
             JObject updateOrg = (JObject)updateOrgJoResponse["organization"];
             orgIdUpdate = updateOrg["id"].ToString();
