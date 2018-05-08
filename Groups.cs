@@ -166,8 +166,10 @@ namespace newConsole {
                         bool groupDHFound = false;
                         bool groupAHFound = false;
                         if (groupsArray[i]["name"].ToString().Contains("Group D ")) {
+                            // Console.WriteLine("GROUP D");
                             /*MM*/
                             if (groupsArray[i]["name"].ToString().Contains("MM")) {
+                                // Console.WriteLine("Group MM");
                                 for (int j=0; j<entries.Count; j++) {
                                     if (entries[j]["MM"].ToString() == usersArray[0]["name"].ToString()) {
                                         if (groupsArray[i]["name"].ToString().Contains(entries[j]["Branch Code"].ToString())) {
@@ -188,9 +190,11 @@ namespace newConsole {
 
                             /*DH*/
                             if (groupsArray[i]["name"].ToString().Contains("Dept Head")) {
+                                // Console.WriteLine("Group DH");
                                 for (int j=0; j<entries.Count; j++) {
+                                    // Console.WriteLine(JsonConvert.SerializeObject(entries[j]));
                                     if (entries[j]["Dept. Head"].ToString() == usersArray[0]["name"].ToString()) {
-                                        if (groupsArray[i]["name"].ToString().Contains(entries[j]["Region Dept Head"].ToString())) {
+                                        if (groupsArray[i]["name"].ToString().Contains(entries[j]["Region"].ToString())) {
                                             groupDHFound = true;
                                         }
                                     }
@@ -208,6 +212,7 @@ namespace newConsole {
 
                             /*AH*/
                             if (groupsArray[i]["name"].ToString().Contains("Area Head")) {
+                                // Console.WriteLine("Group AH");
                                 for (int j=0; j<entries.Count; j++) {
                                     if (entries[j]["NAMA Area Head"].ToString() == usersArray[0]["name"].ToString()) {
                                         if (groupsArray[i]["name"].ToString().Contains(entries[j]["AREA"].ToString())) {

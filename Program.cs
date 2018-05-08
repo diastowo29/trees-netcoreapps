@@ -21,23 +21,20 @@ namespace newConsole
 {
     class Program
     {
-        static string zendeskTeamLeaderRoleId = "11434967"; /*Team Leader*/
-        // static string zendeskTeamLeaderRoleId = "8595408"; /*Staff*/
+        // static string zendeskTeamLeaderRoleId = "11434967"; /*Team Leader*/
+        static string zendeskTeamLeaderRoleId = "8595408"; /*Staff*/
 
         static string zendeskUsername = "";
         static string zendeskPassword = "";
 
-        static string originDirectory = "D:/WORK/Dotnet/trees-netcoreapps/ZD Dealer Survey/Upload/";
-        static string destDirectory = "D:/WORK/Dotnet/trees-netcoreapps/ZD Dealer Survey/Archive/";
+        // static string originDirectory = "D:/WORK/Dotnet/trees-netcoreapps/ZD Dealer Survey/Upload/";
+        // static string destDirectory = "D:/WORK/Dotnet/trees-netcoreapps/ZD Dealer Survey/Archive/";
 
-        // static string originDirectory = "C:/ZD Dealer Survey/Upload/";
-        // static string destDirectory = "C:/ZD Dealer Survey/Archive/";
+        static string originDirectory = "C:/ZD Dealer Survey/Upload/";
+        static string destDirectory = "C:/ZD Dealer Survey/Archive/";
 
-        static string emailDomain = "@example.com";
-        // static string emailDomain = "@fifgroup.co.id";
-        
-        // static string originDirectory = "doc/";
-        // static string destDirectory = "doc_done/";
+        // static string emailDomain = "@example.com";
+        static string emailDomain = "@fifgroup.co.id";
 
         static List<string> userList = new List<string>();
         static string supportGroupId = "";
@@ -235,121 +232,111 @@ namespace newConsole
             List<Dictionary<string,string>> agentGroupList = new List<Dictionary<string, string>>();
 
             for (int i=0; i<entries.Count; i++) {
-                Dictionary<string,string> userDone = new Dictionary<string,string>();
-                List<JToken> userJustCreated = new List<JToken>();
-                Console.WriteLine("=========== NEW ROW ==========");
-                string groupMM = "Group D MM " + entries[i]["Branch Code"].ToString();
-                string groupAH = "Group D Area Head " + entries[i]["AREA"].ToString();
-                string groupDH = "Group D Dept Head " + entries[i]["Region Dept Head"].ToString();
-                string orgName = "D " + entries[i]["Branch Code"].ToString();
+                // if (i > 385) {
+                    Dictionary<string,string> userDone = new Dictionary<string,string>();
+                    List<JToken> userJustCreated = new List<JToken>();
+                    Console.WriteLine("=========== NEW ROW ==========");
+                    Console.WriteLine("Dealer ID: " + entries[i]["Dealer ID"].ToString());
+                    string groupMM = "Group D MM " + entries[i]["Branch Code"].ToString();
+                    string groupAH = "Group D Area Head " + entries[i]["AREA"].ToString();
+                    string groupDH = "Group D Dept Head " + entries[i]["Region"].ToString();
+                    string orgName = "D " + entries[i]["Branch Code"].ToString();
 
-                string namaMm = entries[i]["MM"].ToString();
-                string namaDh = entries[i]["Dept. Head"].ToString();
-                string namaAh = entries[i]["NAMA Area Head"].ToString();
+                    string namaMm = entries[i]["MM"].ToString();
+                    string namaDh = entries[i]["Dept. Head"].ToString();
+                    string namaAh = entries[i]["NAMA Area Head"].ToString();
 
-                string emailMm = entries[i]["NPK MM"].ToString() + emailDomain;
-                string emailDh = entries[i]["NPK Dept. Head"].ToString() + emailDomain;
-                string emailAh = entries[i]["NPK Area Head"].ToString() + emailDomain;
+                    string emailMm = entries[i]["NPK MM"].ToString() + emailDomain;
+                    string emailDh = entries[i]["NPK Dept. Head"].ToString() + emailDomain;
+                    string emailAh = entries[i]["NPK Area Head"].ToString() + emailDomain;
 
-                string newUserMmId = "0";
-                string newUserDhId = "0";
-                string newUserAhId = "0";
+                    string newUserMmId = "0";
+                    string newUserDhId = "0";
+                    string newUserAhId = "0";
 
-                string newGroupMMid = "nil";
-                string newGroupDHid = "nil";
-                string newGroupAHid = "nil";
+                    string newGroupMMid = "nil";
+                    string newGroupDHid = "nil";
+                    string newGroupAHid = "nil";
 
-                string emailPicOwner = entries[i]["Alamat email PIC Owner"].ToString();
-                string emailOwner = entries[i]["Alamat email owner"].ToString();
-                string emailPicOutlet = entries[i]["Alamat email PIC Outlet"].ToString();
+                    string emailPicOwner = entries[i]["Alamat email PIC Owner"].ToString();
+                    string emailOwner = entries[i]["Alamat email owner"].ToString();
+                    string emailPicOutlet = entries[i]["Alamat email PIC Outlet"].ToString();
 
-                Dictionary<string,string> agentMembership = new Dictionary<string,string>();
-                List<Dictionary<string,string>> agentMembershipList = new List<Dictionary<string,string>>();
-                List<string> deleteGroupList = new List<string>();
+                    Dictionary<string,string> agentMembership = new Dictionary<string,string>();
+                    List<Dictionary<string,string>> agentMembershipList = new List<Dictionary<string,string>>();
+                    List<string> deleteGroupList = new List<string>();
 
-                Program newCon = new Program();
+                    Program newCon = new Program();
 
-                // if (i < excelLimit) {
-                    /*NEW LOGIC*/
-                    groupList = myGroup.searchGroup(groupMM, groupDH, groupAH, zendeskUsername, zendeskPassword);
-                    Console.WriteLine(JsonConvert.SerializeObject(groupList));
-                    newGroupMMid = groupList["groupMMid"].ToString();
-                    newGroupDHid = groupList["groupDHid"].ToString();
-                    newGroupAHid = groupList["groupAHid"].ToString();
+                    // if (i < excelLimit) {
+                        /*NEW LOGIC*/
+                        groupList = myGroup.searchGroup(groupMM, groupDH, groupAH, zendeskUsername, zendeskPassword);
+                        Console.WriteLine(JsonConvert.SerializeObject(groupList));
+                        newGroupMMid = groupList["groupMMid"].ToString();
+                        newGroupDHid = groupList["groupDHid"].ToString();
+                        newGroupAHid = groupList["groupAHid"].ToString();
 
-                    if (newGroupMMid.Equals("0")) {
-                        if (i == 0) {
-                            /*DO CREATE GROUPS*/
-                            newGroupMMid = myGroup.createGroup(groupMM, zendeskUsername, zendeskPassword);
-                            groupMMid = newGroupMMid;
-                        } else {
-                            if (entries[i]["Branch Code"] == entries[i-1]["Branch Code"]) {
-                                newGroupMMid = groupMMid;
-                            } else {
+                        // Console.WriteLine(newGroupMMid.Equals("0"));
+                        // Console.WriteLine(newGroupDHid.Equals("0"));
+                        // Console.WriteLine(newGroupAHid.Equals("0"));
+                        if (newGroupMMid.Equals("0")) {
+                            if (i == 0) {
                                 /*DO CREATE GROUPS*/
                                 newGroupMMid = myGroup.createGroup(groupMM, zendeskUsername, zendeskPassword);
                                 groupMMid = newGroupMMid;
+                            } else {
+                                Console.WriteLine(entries[i-1]["Branch Code"]);
+                                Console.WriteLine(entries[i]["Branch Code"] == entries[i-1]["Branch Code"]);
+                                if (entries[i]["Branch Code"] == entries[i-1]["Branch Code"]) {
+                                    newGroupMMid = groupMMid;
+                                } else {
+                                    /*DO CREATE GROUPS*/
+                                    newGroupMMid = myGroup.createGroup(groupMM, zendeskUsername, zendeskPassword);
+                                    groupMMid = newGroupMMid;
+                                }
                             }
                         }
-                    }
 
-                    if (newGroupDHid.Equals("0")) {
-                        if (i == 0) {
-                            /*DO CREATE GROUPS*/
-                            newGroupDHid = myGroup.createGroup(groupDH, zendeskUsername, zendeskPassword);
-                            groupDHid = newGroupDHid;
-                        } else {
-                            if (entries[i]["Region Dept Head"] == entries[i-1]["Region Dept Head"]) {
-                                newGroupDHid = groupDHid;
-                            } else {
+                        if (newGroupDHid.Equals("0")) {
+                            if (i == 0) {
                                 /*DO CREATE GROUPS*/
                                 newGroupDHid = myGroup.createGroup(groupDH, zendeskUsername, zendeskPassword);
                                 groupDHid = newGroupDHid;
+                            } else {
+                                if (entries[i]["Region"] == entries[i-1]["Region"]) {
+                                    newGroupDHid = groupDHid;
+                                } else {
+                                    /*DO CREATE GROUPS*/
+                                    newGroupDHid = myGroup.createGroup(groupDH, zendeskUsername, zendeskPassword);
+                                    groupDHid = newGroupDHid;
+                                }
                             }
                         }
-                    }
 
-                    if (newGroupAHid.Equals("0")) {
-                        if (i == 0) {
-                            /*DO CREATE GROUPS*/
-                            newGroupAHid = myGroup.createGroup(groupAH, zendeskUsername, zendeskPassword);
-                            groupAHid = newGroupAHid;
-                        } else {
-                            if (entries[i]["AREA"] == entries[i-1]["AREA"]) {
-                                newGroupAHid = groupAHid;
-                            } else {
+                        if (newGroupAHid.Equals("0")) {
+                            if (i == 0) {
                                 /*DO CREATE GROUPS*/
                                 newGroupAHid = myGroup.createGroup(groupAH, zendeskUsername, zendeskPassword);
                                 groupAHid = newGroupAHid;
+                            } else {
+                                if (entries[i]["AREA"] == entries[i-1]["AREA"]) {
+                                    newGroupAHid = groupAHid;
+                                } else {
+                                    /*DO CREATE GROUPS*/
+                                    newGroupAHid = myGroup.createGroup(groupAH, zendeskUsername, zendeskPassword);
+                                    groupAHid = newGroupAHid;
+                                }
                             }
                         }
-                    }
 
-                    agentList = users.searchAgent(emailMm, emailDh, emailAh, zendeskUsername, zendeskPassword);
-                    newUserMmId = agentList["userMmId"].ToString();
-                    newUserDhId = agentList["userDhId"].ToString();
-                    newUserAhId = agentList["userAhId"].ToString();
+                        agentList = users.searchAgent(emailMm, emailDh, emailAh, zendeskUsername, zendeskPassword);
+                        newUserMmId = agentList["userMmId"].ToString();
+                        newUserDhId = agentList["userDhId"].ToString();
+                        newUserAhId = agentList["userAhId"].ToString();
 
-                    if (namaMm != "#N/A") {
-                        if (newUserMmId == "0") {
-                            if (i == 0) {
-                                /*DO CREATE AGENT*/
-                                newUserMmId = users.createAgent(namaMm, emailMm, newGroupMMid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
-                                userMmId = newUserMmId;
-                                if (newUserMmId == "0") {
-                                    Dictionary<string,string> newError = new Dictionary<string,string>();
-                                    newError.Add("user_error", "row: " + i + ", error when create agent: " + emailMm);
-                                    errorList.Add(newError);
-                                }
-                            } else {
-                                if (entries[i]["MM"] == entries[i-1]["MM"]) {
-                                    newUserMmId = userMmId;
-                                    agentMembership.Add("group_id", newGroupMMid);
-                                    agentMembership.Add("user_id", newUserMmId);
-                                    agentMembershipList.Add(agentMembership);
-                                    agentGroupList.Add(agentMembership);
-                                    agentMembership = new Dictionary<string,string>();
-                                } else {
+                        if (namaMm != "#N/A") {
+                            if (newUserMmId == "0") {
+                                if (i == 0) {
                                     /*DO CREATE AGENT*/
                                     newUserMmId = users.createAgent(namaMm, emailMm, newGroupMMid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
                                     userMmId = newUserMmId;
@@ -358,42 +345,42 @@ namespace newConsole
                                         newError.Add("user_error", "row: " + i + ", error when create agent: " + emailMm);
                                         errorList.Add(newError);
                                     }
-                                }
-                            }
-                        } else {
-                            userMmId = newUserMmId;
-                            agentMembership.Add("group_id", newGroupMMid);
-                            agentMembership.Add("user_id", newUserMmId);
-                            agentMembershipList.Add(agentMembership);
-                            agentGroupList.Add(agentMembership);
-                            agentMembership = new Dictionary<string,string>();
-                        }
-                    } else {
-                        deleteGroupList.Add(newGroupMMid);
-                        // myGroup.deleteAllMember(newGroupMMid);
-                        /*DELETE ALL MEMBERLIST*/
-                    }
-
-                    if (namaDh != "#N/A") {
-                        if (newUserDhId == "0") {
-                            if (i == 0) {
-                                /*DO CREATE AGENT*/
-                                newUserDhId = users.createAgent(namaDh, emailDh, newGroupDHid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
-                                userDhId = newUserDhId;
-                                if (newUserDhId == "0") {
-                                    Dictionary<string,string> newError = new Dictionary<string,string>();
-                                    newError.Add("user_error", "row: " + i + ", error when create agent: " + emailDh);
-                                    errorList.Add(newError);
+                                } else {
+                                    if (entries[i]["MM"] == entries[i-1]["MM"]) {
+                                        newUserMmId = userMmId;
+                                        agentMembership.Add("group_id", newGroupMMid);
+                                        agentMembership.Add("user_id", newUserMmId);
+                                        agentMembershipList.Add(agentMembership);
+                                        agentGroupList.Add(agentMembership);
+                                        agentMembership = new Dictionary<string,string>();
+                                    } else {
+                                        /*DO CREATE AGENT*/
+                                        newUserMmId = users.createAgent(namaMm, emailMm, newGroupMMid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
+                                        userMmId = newUserMmId;
+                                        if (newUserMmId == "0") {
+                                            Dictionary<string,string> newError = new Dictionary<string,string>();
+                                            newError.Add("user_error", "row: " + i + ", error when create agent: " + emailMm);
+                                            errorList.Add(newError);
+                                        }
+                                    }
                                 }
                             } else {
-                                if (entries[i]["Dept. Head"] == entries[i-1]["Dept. Head"]) {
-                                    newUserDhId = userDhId;
-                                    agentMembership.Add("group_id", newGroupDHid);
-                                    agentMembership.Add("user_id", newUserDhId);
-                                    agentMembershipList.Add(agentMembership);
-                                    agentGroupList.Add(agentMembership);
-                                    agentMembership = new Dictionary<string,string>();
-                                } else {
+                                userMmId = newUserMmId;
+                                agentMembership.Add("group_id", newGroupMMid);
+                                agentMembership.Add("user_id", newUserMmId);
+                                agentMembershipList.Add(agentMembership);
+                                agentGroupList.Add(agentMembership);
+                                agentMembership = new Dictionary<string,string>();
+                            }
+                        } else {
+                            deleteGroupList.Add(newGroupMMid);
+                            // myGroup.deleteAllMember(newGroupMMid);
+                            /*DELETE ALL MEMBERLIST*/
+                        }
+
+                        if (namaDh != "#N/A") {
+                            if (newUserDhId == "0") {
+                                if (i == 0) {
                                     /*DO CREATE AGENT*/
                                     newUserDhId = users.createAgent(namaDh, emailDh, newGroupDHid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
                                     userDhId = newUserDhId;
@@ -402,41 +389,41 @@ namespace newConsole
                                         newError.Add("user_error", "row: " + i + ", error when create agent: " + emailDh);
                                         errorList.Add(newError);
                                     }
-                                }
-                            }
-                        } else {
-                            agentMembership.Add("group_id", newGroupDHid);
-                            agentMembership.Add("user_id", newUserDhId);
-                            agentMembershipList.Add(agentMembership);
-                            agentGroupList.Add(agentMembership);
-                            agentMembership = new Dictionary<string,string>();
-                        }
-                    } else {
-                        deleteGroupList.Add(newGroupDHid);
-                        // myGroup.deleteAllMember(newGroupDHid);
-                        /*DELETE ALL MEMBERLIST*/
-                    }
-
-                    if (namaAh != "#N/A") {
-                        if (newUserAhId == "0") {
-                            if (i == 0) {
-                                /*DO CREATE AGENT*/
-                                newUserAhId = users.createAgent(namaAh, emailAh, newGroupAHid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
-                                userAhId = newUserAhId;
-                                if (newUserAhId == "0") {
-                                    Dictionary<string,string> newError = new Dictionary<string,string>();
-                                    newError.Add("user_error", "row: " + i + ", error when create agent: " + emailAh);
-                                    errorList.Add(newError);
+                                } else {
+                                    if (entries[i]["Dept. Head"] == entries[i-1]["Dept. Head"]) {
+                                        newUserDhId = userDhId;
+                                        agentMembership.Add("group_id", newGroupDHid);
+                                        agentMembership.Add("user_id", newUserDhId);
+                                        agentMembershipList.Add(agentMembership);
+                                        agentGroupList.Add(agentMembership);
+                                        agentMembership = new Dictionary<string,string>();
+                                    } else {
+                                        /*DO CREATE AGENT*/
+                                        newUserDhId = users.createAgent(namaDh, emailDh, newGroupDHid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
+                                        userDhId = newUserDhId;
+                                        if (newUserDhId == "0") {
+                                            Dictionary<string,string> newError = new Dictionary<string,string>();
+                                            newError.Add("user_error", "row: " + i + ", error when create agent: " + emailDh);
+                                            errorList.Add(newError);
+                                        }
+                                    }
                                 }
                             } else {
-                                if (entries[i]["NAMA Area Head"] == entries[i-1]["NAMA Area Head"]) {
-                                    newUserAhId = userAhId;
-                                    agentMembership.Add("group_id", newGroupAHid);
-                                    agentMembership.Add("user_id", newUserAhId);
-                                    agentMembershipList.Add(agentMembership);
-                                    agentGroupList.Add(agentMembership);
-                                    agentMembership = new Dictionary<string,string>();
-                                } else {
+                                agentMembership.Add("group_id", newGroupDHid);
+                                agentMembership.Add("user_id", newUserDhId);
+                                agentMembershipList.Add(agentMembership);
+                                agentGroupList.Add(agentMembership);
+                                agentMembership = new Dictionary<string,string>();
+                            }
+                        } else {
+                            deleteGroupList.Add(newGroupDHid);
+                            // myGroup.deleteAllMember(newGroupDHid);
+                            /*DELETE ALL MEMBERLIST*/
+                        }
+
+                        if (namaAh != "#N/A") {
+                            if (newUserAhId == "0") {
+                                if (i == 0) {
                                     /*DO CREATE AGENT*/
                                     newUserAhId = users.createAgent(namaAh, emailAh, newGroupAHid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
                                     userAhId = newUserAhId;
@@ -445,313 +432,105 @@ namespace newConsole
                                         newError.Add("user_error", "row: " + i + ", error when create agent: " + emailAh);
                                         errorList.Add(newError);
                                     }
+                                } else {
+                                    if (entries[i]["NAMA Area Head"] == entries[i-1]["NAMA Area Head"]) {
+                                        newUserAhId = userAhId;
+                                        agentMembership.Add("group_id", newGroupAHid);
+                                        agentMembership.Add("user_id", newUserAhId);
+                                        agentMembershipList.Add(agentMembership);
+                                        agentGroupList.Add(agentMembership);
+                                        agentMembership = new Dictionary<string,string>();
+                                    } else {
+                                        /*DO CREATE AGENT*/
+                                        newUserAhId = users.createAgent(namaAh, emailAh, newGroupAHid, zendeskTeamLeaderRoleId, zendeskUsername, zendeskPassword);
+                                        userAhId = newUserAhId;
+                                        if (newUserAhId == "0") {
+                                            Dictionary<string,string> newError = new Dictionary<string,string>();
+                                            newError.Add("user_error", "row: " + i + ", error when create agent: " + emailAh);
+                                            errorList.Add(newError);
+                                        }
+                                    }
                                 }
+                            } else {
+                                agentMembership.Add("group_id", newGroupAHid);
+                                agentMembership.Add("user_id", newUserAhId);
+                                agentMembershipList.Add(agentMembership);
+                                agentGroupList.Add(agentMembership);
+                                agentMembership = new Dictionary<string,string>();
                             }
                         } else {
-                            agentMembership.Add("group_id", newGroupAHid);
-                            agentMembership.Add("user_id", newUserAhId);
-                            agentMembershipList.Add(agentMembership);
-                            agentGroupList.Add(agentMembership);
-                            agentMembership = new Dictionary<string,string>();
+                            deleteGroupList.Add(newGroupAHid);
+                            // myGroup.deleteAllMember(newGroupAHid);
+                            /*DELETE ALL MEMBERLIST*/
                         }
-                    } else {
-                        deleteGroupList.Add(newGroupAHid);
-                        // myGroup.deleteAllMember(newGroupAHid);
-                        /*DELETE ALL MEMBERLIST*/
-                    }
-                    if (deleteGroupList.Count > 0) {
-                        myGroup.deleteAllMember(deleteGroupList, zendeskUsername, zendeskPassword);
-                    }
-                    
-                    myGroup.addMembership(agentMembershipList, agentGroupList, zendeskUsername, zendeskPassword);
-                    if (!doneAgent.Contains(newUserMmId)) {
-                        myGroup.checkAgentMembership(newUserMmId, newGroupMMid, entries, "MM", zendeskUsername, zendeskPassword);
-                        doneAgent.Add(newUserMmId);
-                    }
-                    if (!doneAgent.Contains(newUserDhId)) {
-                        myGroup.checkAgentMembership(newUserDhId, newGroupDHid, entries, "DH", zendeskUsername, zendeskPassword);
-                        doneAgent.Add(newUserDhId);
-                    }
-                    if (!doneAgent.Contains(newUserAhId)) {
-                        myGroup.checkAgentMembership(newUserAhId, newGroupAHid, entries, "AH", zendeskUsername, zendeskPassword);
-                        doneAgent.Add(newUserAhId);
-                    }
+                        if (deleteGroupList.Count > 0) {
+                            myGroup.deleteAllMember(deleteGroupList, zendeskUsername, zendeskPassword);
+                        }
+                        
+                        myGroup.addMembership(agentMembershipList, agentGroupList, zendeskUsername, zendeskPassword);
+                        if (!doneAgent.Contains(newUserMmId)) {
+                            myGroup.checkAgentMembership(newUserMmId, newGroupMMid, entries, "MM", zendeskUsername, zendeskPassword);
+                            doneAgent.Add(newUserMmId);
+                        }
+                        if (!doneAgent.Contains(newUserDhId)) {
+                            myGroup.checkAgentMembership(newUserDhId, newGroupDHid, entries, "DH", zendeskUsername, zendeskPassword);
+                            doneAgent.Add(newUserDhId);
+                        }
+                        if (!doneAgent.Contains(newUserAhId)) {
+                            myGroup.checkAgentMembership(newUserAhId, newGroupAHid, entries, "AH", zendeskUsername, zendeskPassword);
+                            doneAgent.Add(newUserAhId);
+                        }
 
-                    if (i > 0) {
-                        if (entries[i]["Branch Code"] != entries[i-1]["Branch Code"]) {
+                        if (i > 0) {
+                            if (entries[i]["Branch Code"] != entries[i-1]["Branch Code"]) {
+                                orgId = myOrg.searchOrganizations(orgName, newGroupMMid, newUserMmId, newGroupDHid, newUserDhId, newGroupAHid, newUserAhId, zendeskUsername, zendeskPassword);
+                            }
+                        } else {
                             orgId = myOrg.searchOrganizations(orgName, newGroupMMid, newUserMmId, newGroupDHid, newUserDhId, newGroupAHid, newUserAhId, zendeskUsername, zendeskPassword);
                         }
-                    } else {
-                        orgId = myOrg.searchOrganizations(orgName, newGroupMMid, newUserMmId, newGroupDHid, newUserDhId, newGroupAHid, newUserAhId, zendeskUsername, zendeskPassword);
-                    }
 
-                    if (i == 0) {
-                        userJustCreated = users.checkDealer(userCreated, entries, orgId, false, false, false, entries[i], zendeskUsername, zendeskPassword);
-                        for (int j=0; j<userJustCreated.Count; j++) {
-                            userCreated.Add(userJustCreated[j]);
-                        }
-                        userList.Add(emailOwner);
-                        userList.Add(emailPicOwner);
-                        userList.Add(emailPicOutlet);
-                    } else {
-                        bool doneOwner = false;
-                        bool donePicOwner = false;
-                        bool donePicOutlet = false;
-
-                        for (int u=0; u<userList.Count; u++) {
-                            if (emailOwner.Equals(userList[u])) {
-                                doneOwner = true;
+                        if (i == 0) {
+                            userJustCreated = users.checkDealer(userCreated, entries, orgId, false, false, false, entries[i], zendeskUsername, zendeskPassword);
+                            for (int j=0; j<userJustCreated.Count; j++) {
+                                userCreated.Add(userJustCreated[j]);
                             }
-                            if (emailPicOwner.Equals(userList[u])) {
-                                donePicOwner = true;
-                            }
-                            if (emailPicOutlet.Equals(userList[u])) {
-                                donePicOutlet = true;
-                            }
-                        }
-
-                        userJustCreated = users.checkDealer(userCreated, entries ,orgId, doneOwner, donePicOwner, donePicOutlet,  entries[i], zendeskUsername, zendeskPassword);
-                        for (int j=0; j<userJustCreated.Count; j++) {
-                            userCreated.Add(userJustCreated[j]);
-                        }
-                        if (!doneOwner) {
                             userList.Add(emailOwner);
-                        }
-                        if (!donePicOwner) {
                             userList.Add(emailPicOwner);
-                        }
-                        if (!donePicOutlet) {
                             userList.Add(emailPicOutlet);
+                        } else {
+                            bool doneOwner = false;
+                            bool donePicOwner = false;
+                            bool donePicOutlet = false;
+
+                            for (int u=0; u<userList.Count; u++) {
+                                if (emailOwner.Equals(userList[u])) {
+                                    doneOwner = true;
+                                }
+                                if (emailPicOwner.Equals(userList[u])) {
+                                    donePicOwner = true;
+                                }
+                                if (emailPicOutlet.Equals(userList[u])) {
+                                    donePicOutlet = true;
+                                }
+                            }
+
+                            userJustCreated = users.checkDealer(userCreated, entries ,orgId, doneOwner, donePicOwner, donePicOutlet,  entries[i], zendeskUsername, zendeskPassword);
+                            for (int j=0; j<userJustCreated.Count; j++) {
+                                userCreated.Add(userJustCreated[j]);
+                            }
+                            if (!doneOwner) {
+                                userList.Add(emailOwner);
+                            }
+                            if (!donePicOwner) {
+                                userList.Add(emailPicOwner);
+                            }
+                            if (!donePicOutlet) {
+                                userList.Add(emailPicOutlet);
+                            }
                         }
-                    }
 
-                /*END IF EXCELLIMIT*/
-                // }
-
-                /*OLD LOGIC*/
-                // if (i==0) {
-
-                //     if (isGroupExist(groupMM) == "0") {
-                //         string createResponse = newCon.doCreateGroup(groupMM);
-                //         JObject createObject = JObject.Parse(createResponse);
-                //         groupMMid = createObject["group"]["id"].ToString();
-                //     } else {
-                //         groupMMid = isGroupExist(groupMM);
-                //     }
-
-                //     if (isGroupExist(groupAH) == "0") {
-                //         string createResponse = newCon.doCreateGroup(groupAH);
-                //         JObject createObject = JObject.Parse(createResponse);
-                //         groupAHid = createObject["group"]["id"].ToString();
-                //     } else {
-                //         groupAHid = isGroupExist(groupAH);
-                //     }
-
-                //     if (isGroupExist(groupDH) == "0") {
-                //         string createResponse = newCon.doCreateGroup(groupDH);
-                //         JObject createObject = JObject.Parse(createResponse);
-                //         groupDHid = createObject["group"]["id"].ToString();
-                //     } else {
-                //         groupDHid = isGroupExist(groupDH);
-                //     }
-
-                //     string nameParameter = "name:\"" + namaMm.Replace("#N/A", "") + "\"+name:\"" + namaDh.Replace("#N/A", "") +/* "\"+name:\"" + namaBm +*/ "\"+name:\"" + namaAh.Replace("#N/A", "") + "\"";
-                //     string userResponse = isUserExist(nameParameter);
-                //     JObject userJoResponse = JObject.Parse(userResponse);
-                //     JArray usersList = (JArray)userJoResponse["results"];
-                //     bool mmFound = false;
-                //     bool dhFound = false;
-                //     bool ahFound = false;
-                //     for (int u=0; u<usersList.Count; u++){
-                //         if (usersList[u]["name"].ToString().ToLower() == namaMm.ToLower()) {
-                //             mmFound = true;
-                //             userMmId = usersList[u]["id"].ToString();
-                //         }
-                //         if (usersList[u]["name"].ToString().ToLower() == namaDh.ToLower()) {
-                //             dhFound = true;
-                //             userDhId = usersList[u]["id"].ToString();
-                //         }
-                //         if (usersList[u]["name"].ToString().ToLower() == namaAh.ToLower()) {
-                //             ahFound = true;
-                //             userAhId = usersList[u]["id"].ToString();
-                //         }
-                //     }
-                //     if (namaMm != "#N/A"){
-                //         if (!mmFound) {
-                //             string userCreate = newCon.createUser(namaMm);
-                //             JObject userCreateJoResponse = JObject.Parse(userCreate);
-                //             userMmId = userCreateJoResponse["user"]["id"].ToString();
-                //         }
-                //     } else {
-                //         userMmId = "0";
-                //         newCon.listGroupMembership(groupMMid);
-                //     }
-
-                //     if (namaDh != "#N/A") {
-                //         if (!dhFound) {
-                //             string userCreate = newCon.createUser(namaDh);
-                //             JObject userCreateJoResponse = JObject.Parse(userCreate);
-                //             userDhId = userCreateJoResponse["user"]["id"].ToString();
-                //         }
-                //     } else {
-                //         userDhId = "0";
-                //         newCon.listGroupMembership(groupDHid);
-                //     }
-
-                //     if (namaAh != "#N/A") {
-                //         if (!ahFound) {
-                //             string userCreate = newCon.createUser(namaAh);
-                //             JObject userCreateJoResponse = JObject.Parse(userCreate);
-                //             userAhId = userCreateJoResponse["user"]["id"].ToString();
-                //         }
-                //     } else {
-                //         userAhId = "0";
-                //         newCon.listGroupMembership(groupAHid);
-                //     }
-
-                //     List<Dictionary<string,string>> groupMembershipsList = createGroupMembership(groupMMid, userMmId, groupDHid, userDhId, groupAHid, userAhId);
-                //     checkGroupMemberships(groupMembershipsList);
-                //     orgId = org.searchOrganizations(orgName, groupMMid, userMmId, groupDHid, userDhId, groupAHid, userAhId);
-                //     userJustCreated = users.checkDealer(userCreated, entries, orgId, false, false, false, entries[i]);
-                //     for (int j=0; j<userJustCreated.Count; j++) {
-                //         userCreated.Add(userJustCreated[j]);
-                //     }
-                //     userList.Add(emailOwner);
-                //     userList.Add(emailPicOwner);
-                //     userList.Add(emailPicOutlet);
-                // } else if (i <= excelLimit) {
-
-                //     if (entries[i]["Branch Code"].ToString() != entries[i-1]["Branch Code"].ToString()) {
-                //         if (isGroupExist(groupMM) == "0") {
-                //             string createResponse = newCon.doCreateGroup(groupMM);
-                //             JObject createObject = JObject.Parse(createResponse);
-                //             // JObject group = (JObject)createObject["group"];
-                //             groupMMid = createObject["group"]["id"].ToString();
-                //         } else {
-                //             groupMMid = isGroupExist(groupMM);
-                //         }
-                //     }
-
-                //     if (entries[i]["AREA"].ToString() != entries[i-1]["AREA"].ToString()) {
-                //         if (isGroupExist(groupAH) == "0") {
-                //             string createResponse = newCon.doCreateGroup(groupAH);
-                //             JObject createObject = JObject.Parse(createResponse);
-                //             // JObject group = (JObject)createObject["group"];
-                //             groupAHid = createObject["group"]["id"].ToString();
-                //         } else {
-                //             groupAHid = isGroupExist(groupAH);
-                //         }
-                //     }
-
-                //     if (entries[i]["Region Dept Head"].ToString() != entries[i-1]["Region Dept Head"].ToString()) {
-                //         if (isGroupExist(groupDH) == "0") {
-                //             string createResponse = newCon.doCreateGroup(groupDH);
-                //             JObject createObject = JObject.Parse(createResponse);
-                //             // JObject group = (JObject)createObject["group"];
-                //             groupDHid = createObject["group"]["id"].ToString();
-                //         } else {
-                //             groupDHid = isGroupExist(groupDH);
-                //         }
-                //     }
-
-                //     string nameParameter = "name:\"" + namaMm.Replace("#N/A", "") + "\"+name:\"" + namaDh.Replace("#N/A", "") +/* "\"+name:\"" + namaBm + */"\"+name:\"" + namaAh.Replace("#N/A", "") + "\"";
-                //     string userResponse = isUserExist(nameParameter);
-                //     JObject userJoResponse = JObject.Parse(userResponse);
-                //     JArray usersList = (JArray)userJoResponse["results"];
-                //     bool mmFound = false;
-                //     bool dhFound = false;
-                //     bool ahFound = false;
-                //     for (int u=0; u<usersList.Count; u++){
-                //         if (usersList[u]["name"].ToString().ToLower() == namaMm.ToLower()) {
-                //             mmFound = true;
-                //             userMmId = usersList[u]["id"].ToString();
-                //         }
-                //         if (usersList[u]["name"].ToString().ToLower() == namaDh.ToLower()) {
-                //             dhFound = true;
-                //             userDhId = usersList[u]["id"].ToString();
-                //         }
-                //         if (usersList[u]["name"].ToString().ToLower() == namaAh.ToLower()) {
-                //             ahFound = true;
-                //             userAhId = usersList[u]["id"].ToString();
-                //         }
-                //     }
-
-                //     if (namaMm != "#N/A") {
-                //         if (!mmFound) {
-                //             if (entries[i]["MM"] != entries[i-1]["MM"]) {
-                //                 string userCreate = newCon.createUser(namaMm);
-                //                 JObject userCreateJoResponse = JObject.Parse(userCreate);
-                //                 // JObject user = (JObject)userCreateJoResponse["user"];
-                //                 userMmId = userCreateJoResponse["user"]["id"].ToString();
-                //             }
-                //         }
-                //     } else {
-                //         userMmId = "0";
-                //         newCon.listGroupMembership(groupMMid);
-                //     }
-
-                //     if (namaDh != "#N/A") {
-                //         if (!dhFound) {
-                //             if (entries[i]["Dept. Head"] != entries[i-1]["Dept. Head"]) {
-                //                 string userCreate = newCon.createUser(namaDh);
-                //                 JObject userCreateJoResponse = JObject.Parse(userCreate);
-                //                 // JObject user = (JObject)userCreateJoResponse["user"];
-                //                 userDhId = userCreateJoResponse["user"]["id"].ToString();
-                //             }
-                //         }
-                //     } else {
-                //         userDhId = "0";
-                //         newCon.listGroupMembership(groupDHid);
-                //     }
-
-                //     if (namaAh != "#N/A") {
-                //         if (!ahFound) {
-                //             if (entries[i]["NAMA Area Head"] != entries[i-1]["NAMA Area Head"]) {
-                //                 string userCreate = newCon.createUser(namaAh);
-                //                 JObject userCreateJoResponse = JObject.Parse(userCreate);
-                //                 // JObject user = (JObject)userCreateJoResponse["user"];
-                //                 userAhId = userCreateJoResponse["user"]["id"].ToString();
-                //             }
-                //         }
-                //     } else {
-                //         userAhId = "0";
-                //         newCon.listGroupMembership(groupAHid);
-                //     }
-
-                //     List<Dictionary<string,string>> groupMembershipsList = createGroupMembership(groupMMid, userMmId, groupDHid, userDhId/*, groupBMid, userBmId*/, groupAHid, userAhId);
-                //     checkGroupMemberships(groupMembershipsList);
-                //     if (entries[i]["Branch Code"] != entries[i-1]["Branch Code"]) {
-                //         orgId = org.searchOrganizations(orgName, groupMMid, userMmId, groupDHid, userDhId, groupAHid, userAhId);
-                //     }
-                //     bool doneOwner = false;
-                //     bool donePicOwner = false;
-                //     bool donePicOutlet = false;
-
-                //     for (int u=0; u<userList.Count; u++) {
-                //         if (emailOwner.Equals(userList[u])) {
-                //             doneOwner = true;
-                //         }
-                //         if (emailPicOwner.Equals(userList[u])) {
-                //             donePicOwner = true;
-                //         }
-                //         if (emailPicOutlet.Equals(userList[u])) {
-                //             donePicOutlet = true;
-                //         }
-                //     }
-
-                //     userJustCreated = users.checkDealer(userCreated, entries ,orgId, doneOwner, donePicOwner, donePicOutlet,  entries[i]);
-                //     for (int j=0; j<userJustCreated.Count; j++) {
-                //         userCreated.Add(userJustCreated[j]);
-                //     }
-                //     if (!doneOwner) {
-                //         userList.Add(emailOwner);
-                //     }
-                //     if (!donePicOwner) {
-                //         userList.Add(emailPicOwner);
-                //     }
-                //     if (!donePicOutlet) {
-                //         userList.Add(emailPicOutlet);
-                //     }
+                    /*END IF EXCELLIMIT*/
+                    // }
                 // }
             }
         }

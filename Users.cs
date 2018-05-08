@@ -423,13 +423,15 @@ namespace newConsole {
             JArray membershipArray = (JArray)checkMembershipResponse["organization_memberships"];
             JArray organizationArray = (JArray)checkMembershipResponse["organizations"];
             JArray usersArray = (JArray)checkMembershipResponse["users"];
-            string userEmail = usersArray[0]["email"].ToString();
 
             StringBuilder deleteList = new StringBuilder();
 
             if (membershipArray.Count > 1) {
+                string userEmail = usersArray[0]["email"].ToString();
+                Console.WriteLine("membershipArray count more than 1");
                 for (int i=0; i<membershipArray.Count; i++) {
                     bool orgFound = false;
+                    Console.WriteLine(organizationArray[i]["name"].ToString());
                     if (organizationArray[i]["name"].ToString().StartsWith("D ")) {
                         string orgName = organizationArray[i]["name"].ToString();
                         string[] orgBranchCode = orgName.Split(' ');
